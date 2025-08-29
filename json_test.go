@@ -1,7 +1,9 @@
-package common
+package common_test
 
 import (
 	"testing"
+
+	"github.com/ose-micro/common"
 )
 
 type User struct {
@@ -16,7 +18,7 @@ func TestJsonToAny(t *testing.T) {
 	}
 
 	var u User
-	err := JsonToAny(raw, &u)
+	err := common.JsonToAny(raw, &u)
 	if err != nil {
 		t.Fatalf("JsonToAny failed: %v", err)
 	}
@@ -29,7 +31,7 @@ func TestJsonToAny(t *testing.T) {
 func TestAnyToJson(t *testing.T) {
 	u := User{Name: "Dev Isho", Age: 25}
 
-	jsonStr, err := AnyToJson(u)
+	jsonStr, err := common.AnyToJson(u)
 	if err != nil {
 		t.Fatalf("AnyToJson failed: %v", err)
 	}
