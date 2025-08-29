@@ -11,6 +11,7 @@
 ## ✨ Features
 
 - 🧩 **Json Converter** – convert from JsonToAny and from AnyToJson
+- 🗺️ **Metadata Converter** - convert map[string]string to map[string]interface{}
 
 ---
 
