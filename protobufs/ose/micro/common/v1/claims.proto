@@ -28,7 +28,7 @@ message Tenant {
 message Claims {
   string sub = 1;
   TokenKind kind = 2;
-  repeated Tenant tenants = 3;
+  map<string, Tenant> tenants = 3;
   string jti = 4;
   string Issuer = 5;
   google.protobuf.Timestamp expires_at = 6;

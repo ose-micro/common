@@ -190,7 +190,7 @@ type Claims struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Sub           string                 `protobuf:"bytes,1,opt,name=sub,proto3" json:"sub,omitempty"`
 	Kind          TokenKind              `protobuf:"varint,2,opt,name=kind,proto3,enum=ose.micro.common.v1.TokenKind" json:"kind,omitempty"`
-	Tenants       []*Tenant              `protobuf:"bytes,3,rep,name=tenants,proto3" json:"tenants,omitempty"`
+	Tenants       map[string]*Tenant     `protobuf:"bytes,3,rep,name=tenants,proto3" json:"tenants,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	Jti           string                 `protobuf:"bytes,4,opt,name=jti,proto3" json:"jti,omitempty"`
 	Issuer        string                 `protobuf:"bytes,5,opt,name=Issuer,proto3" json:"Issuer,omitempty"`
 	ExpiresAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
@@ -243,7 +243,7 @@ func (x *Claims) GetKind() TokenKind {
 	return TokenKind_TokenKind_Undefined
 }
 
-func (x *Claims) GetTenants() []*Tenant {
+func (x *Claims) GetTenants() map[string]*Tenant {
 	if x != nil {
 		return x.Tenants
 	}
@@ -342,16 +342,19 @@ const file_ose_micro_common_v1_claims_proto_rawDesc = "" +
 	"\x06Tenant\x12\x12\n" +
 	"\x04role\x18\x01 \x01(\tR\x04role\x12\x16\n" +
 	"\x06tenant\x18\x02 \x01(\tR\x06tenant\x12A\n" +
-	"\vpermissions\x18\x03 \x03(\v2\x1f.ose.micro.common.v1.PermissionR\vpermissions\"\xa3\x02\n" +
+	"\vpermissions\x18\x03 \x03(\v2\x1f.ose.micro.common.v1.PermissionR\vpermissions\"\x89\x03\n" +
 	"\x06Claims\x12\x10\n" +
 	"\x03sub\x18\x01 \x01(\tR\x03sub\x122\n" +
-	"\x04kind\x18\x02 \x01(\x0e2\x1e.ose.micro.common.v1.TokenKindR\x04kind\x125\n" +
-	"\atenants\x18\x03 \x03(\v2\x1b.ose.micro.common.v1.TenantR\atenants\x12\x10\n" +
+	"\x04kind\x18\x02 \x01(\x0e2\x1e.ose.micro.common.v1.TokenKindR\x04kind\x12B\n" +
+	"\atenants\x18\x03 \x03(\v2(.ose.micro.common.v1.Claims.TenantsEntryR\atenants\x12\x10\n" +
 	"\x03jti\x18\x04 \x01(\tR\x03jti\x12\x16\n" +
 	"\x06Issuer\x18\x05 \x01(\tR\x06Issuer\x129\n" +
 	"\n" +
 	"expires_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\texpiresAt\x127\n" +
-	"\tissued_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\bissuedAt\"8\n" +
+	"\tissued_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\bissuedAt\x1aW\n" +
+	"\fTenantsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x121\n" +
+	"\x05value\x18\x02 \x01(\v2\x1b.ose.micro.common.v1.TenantR\x05value:\x028\x01\"8\n" +
 	"\x04Auth\x12\x16\n" +
 	"\x06access\x18\x01 \x01(\tR\x06access\x12\x18\n" +
 	"\arefresh\x18\x02 \x01(\tR\arefresh*w\n" +
@@ -375,26 +378,28 @@ func file_ose_micro_common_v1_claims_proto_rawDescGZIP() []byte {
 }
 
 var file_ose_micro_common_v1_claims_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_ose_micro_common_v1_claims_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_ose_micro_common_v1_claims_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_ose_micro_common_v1_claims_proto_goTypes = []any{
 	(TokenKind)(0),                // 0: ose.micro.common.v1.TokenKind
 	(*Permission)(nil),            // 1: ose.micro.common.v1.Permission
 	(*Tenant)(nil),                // 2: ose.micro.common.v1.Tenant
 	(*Claims)(nil),                // 3: ose.micro.common.v1.Claims
 	(*Auth)(nil),                  // 4: ose.micro.common.v1.Auth
-	(*timestamppb.Timestamp)(nil), // 5: google.protobuf.Timestamp
+	nil,                           // 5: ose.micro.common.v1.Claims.TenantsEntry
+	(*timestamppb.Timestamp)(nil), // 6: google.protobuf.Timestamp
 }
 var file_ose_micro_common_v1_claims_proto_depIdxs = []int32{
 	1, // 0: ose.micro.common.v1.Tenant.permissions:type_name -> ose.micro.common.v1.Permission
 	0, // 1: ose.micro.common.v1.Claims.kind:type_name -> ose.micro.common.v1.TokenKind
-	2, // 2: ose.micro.common.v1.Claims.tenants:type_name -> ose.micro.common.v1.Tenant
-	5, // 3: ose.micro.common.v1.Claims.expires_at:type_name -> google.protobuf.Timestamp
-	5, // 4: ose.micro.common.v1.Claims.issued_at:type_name -> google.protobuf.Timestamp
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	5, // 2: ose.micro.common.v1.Claims.tenants:type_name -> ose.micro.common.v1.Claims.TenantsEntry
+	6, // 3: ose.micro.common.v1.Claims.expires_at:type_name -> google.protobuf.Timestamp
+	6, // 4: ose.micro.common.v1.Claims.issued_at:type_name -> google.protobuf.Timestamp
+	2, // 5: ose.micro.common.v1.Claims.TenantsEntry.value:type_name -> ose.micro.common.v1.Tenant
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_ose_micro_common_v1_claims_proto_init() }
@@ -409,7 +414,7 @@ func file_ose_micro_common_v1_claims_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_ose_micro_common_v1_claims_proto_rawDesc), len(file_ose_micro_common_v1_claims_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   4,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
