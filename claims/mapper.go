@@ -80,6 +80,7 @@ func buildKindGrpc(kind TokenKind) commonv1.TokenKind {
 
 func buildTenantGrpc(payload map[string]Tenant) map[string]*commonv1.Tenant {
 	tenants := make(map[string]*commonv1.Tenant)
+
 	for key, tenant := range payload {
 		permissions := make([]*commonv1.Permission, 0)
 		for _, permission := range tenant.Permissions {
