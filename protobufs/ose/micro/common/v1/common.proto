@@ -5,10 +5,14 @@ package ose.micro.common.v1;
 option go_package = "github.com/ose-micro/common/gen/go/ose/micro/common/v1;commonv1";
 
 message Address {
-  string region = 1;
-  string district = 2;
-  string chiefdom = 3;
-  string street = 4;
+  string country_code = 1;
+  string city = 2;
+  string state = 3;
+  string postal_code = 4;
+  float latitude = 5;
+  float longitude = 6;
+  string line1 = 7;
+  string line2 = 8;
 }
 
 message Reference {
