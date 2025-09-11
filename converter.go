@@ -42,3 +42,12 @@ func ParseStrToPtn(val string) *string {
 
 	return &val
 }
+
+func ParseTimestampToTimePtn(val *timestamppb.Timestamp) *time.Time {
+	if val == nil {
+		return nil
+	}
+
+	date := val.AsTime()
+	return &date
+}
