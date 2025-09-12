@@ -51,3 +51,38 @@ func ParseTimestampToTimePtn(val *timestamppb.Timestamp) *time.Time {
 	date := val.AsTime()
 	return &date
 }
+
+func StrPtr(s string) *string {
+	if s == "" {
+		return nil
+	}
+	return &s
+}
+
+func IntPtr(i int) *int {
+	if i == 0 {
+		return nil
+	}
+	return &i
+}
+
+func BoolPtr(b bool) *bool {
+	if b {
+		return nil
+	}
+	return &b
+}
+
+func FloatPtr(f float64) *float64 {
+	if f == 0 {
+		return nil
+	}
+	return &f
+}
+
+func TimePtr(t time.Time) *time.Time {
+	if t.IsZero() {
+		return nil
+	}
+	return &t
+}
