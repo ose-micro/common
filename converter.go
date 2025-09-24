@@ -131,39 +131,78 @@ func ToAny(val interface{}) *anypb.Any {
 	return anyVal
 }
 
-func FromAnyToInterface(val *anypb.Any) interface{} {
+func FromAnyToPrimitive(val *anypb.Any) interface{} {
 	if val == nil {
 		return nil
 	}
-
-	var out interface{}
 
 	switch val.TypeUrl {
 	case "type.googleapis.com/google.protobuf.StringValue":
 		wrapped := &wrapperspb.StringValue{}
 		if err := val.UnmarshalTo(wrapped); err != nil {
 			log.Println("Failed to unmarshal string:", err)
-			return nil
+			return ""
 		}
-		out = wrapped.Value
+		return wrapped.Value
+
+	case "type.googleapis.com/google.protobuf.BoolValue":
+		wrapped := &wrapperspb.BoolValue{}
+		if err := val.UnmarshalTo(wrapped); err != nil {
+			log.Println("Failed to unmarshal bool:", err)
+			return false
+		}
+		return wrapped.Value
+
 	case "type.googleapis.com/google.protobuf.Int32Value":
 		wrapped := &wrapperspb.Int32Value{}
 		if err := val.UnmarshalTo(wrapped); err != nil {
 			log.Println("Failed to unmarshal int32:", err)
-			return nil
+			return int32(0)
 		}
-		out = wrapped.Value
+		return wrapped.Value
+
+	case "type.googleapis.com/google.protobuf.Int64Value":
+		wrapped := &wrapperspb.Int64Value{}
+		if err := val.UnmarshalTo(wrapped); err != nil {
+			log.Println("Failed to unmarshal int64:", err)
+			return int64(0)
+		}
+		return wrapped.Value
+
+	case "type.googleapis.com/google.protobuf.UInt32Value":
+		wrapped := &wrapperspb.UInt32Value{}
+		if err := val.UnmarshalTo(wrapped); err != nil {
+			log.Println("Failed to unmarshal uint32:", err)
+			return uint32(0)
+		}
+		return wrapped.Value
+
+	case "type.googleapis.com/google.protobuf.UInt64Value":
+		wrapped := &wrapperspb.UInt64Value{}
+		if err := val.UnmarshalTo(wrapped); err != nil {
+			log.Println("Failed to unmarshal uint64:", err)
+			return uint64(0)
+		}
+		return wrapped.Value
+
+	case "type.googleapis.com/google.protobuf.FloatValue":
+		wrapped := &wrapperspb.FloatValue{}
+		if err := val.UnmarshalTo(wrapped); err != nil {
+			log.Println("Failed to unmarshal float:", err)
+			return float32(0)
+		}
+		return wrapped.Value
+
 	case "type.googleapis.com/google.protobuf.DoubleValue":
 		wrapped := &wrapperspb.DoubleValue{}
 		if err := val.UnmarshalTo(wrapped); err != nil {
 			log.Println("Failed to unmarshal double:", err)
-			return nil
+			return float64(0)
 		}
-		out = wrapped.Value
-	default:
-		// Unknown type, return raw Any
-		out = val
-	}
+		return wrapped.Value
 
-	return out
+	default:
+		log.Printf("Unsupported type: %s\n", val.TypeUrl)
+		return nil
+	}
 }
