@@ -1,10 +1,13 @@
 package common
 
 import (
+	"log"
 	"strconv"
 	"time"
 
+	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 )
 
 func Str2Int(str string) int {
@@ -85,4 +88,82 @@ func TimePtr(t time.Time) *time.Time {
 		return nil
 	}
 	return &t
+}
+
+func ToAny(val interface{}) *anypb.Any {
+	if val == nil {
+		return nil
+	}
+
+	var anyVal *anypb.Any
+	var err error
+
+	switch v := val.(type) {
+	case string:
+		anyVal, err = anypb.New(wrapperspb.String(v))
+	case int:
+		anyVal, err = anypb.New(wrapperspb.Int32(int32(v)))
+	case int32:
+		anyVal, err = anypb.New(wrapperspb.Int32(v))
+	case int64:
+		anyVal, err = anypb.New(wrapperspb.Int64(v))
+	case float32:
+		anyVal, err = anypb.New(wrapperspb.Float(v))
+	case float64:
+		anyVal, err = anypb.New(wrapperspb.Double(v))
+	case bool:
+		anyVal, err = anypb.New(wrapperspb.Bool(v))
+	default:
+		// If it's already a proto.Message, pack directly
+		if msg, ok := v.(anypb.Any); ok {
+			anyVal, err = anypb.New(&msg)
+		} else {
+			log.Printf("Unsupported type for Any: %T\n", val)
+			return nil
+		}
+	}
+
+	if err != nil {
+		log.Println("Failed to pack Any:", err)
+		return nil
+	}
+
+	return anyVal
+}
+
+func FromAnyToInterface(val *anypb.Any) interface{} {
+	if val == nil {
+		return nil
+	}
+
+	var out interface{}
+
+	switch val.TypeUrl {
+	case "type.googleapis.com/google.protobuf.StringValue":
+		wrapped := &wrapperspb.StringValue{}
+		if err := val.UnmarshalTo(wrapped); err != nil {
+			log.Println("Failed to unmarshal string:", err)
+			return nil
+		}
+		out = wrapped.Value
+	case "type.googleapis.com/google.protobuf.Int32Value":
+		wrapped := &wrapperspb.Int32Value{}
+		if err := val.UnmarshalTo(wrapped); err != nil {
+			log.Println("Failed to unmarshal int32:", err)
+			return nil
+		}
+		out = wrapped.Value
+	case "type.googleapis.com/google.protobuf.DoubleValue":
+		wrapped := &wrapperspb.DoubleValue{}
+		if err := val.UnmarshalTo(wrapped); err != nil {
+			log.Println("Failed to unmarshal double:", err)
+			return nil
+		}
+		out = wrapped.Value
+	default:
+		// Unknown type, return raw Any
+		out = val
+	}
+
+	return out
 }

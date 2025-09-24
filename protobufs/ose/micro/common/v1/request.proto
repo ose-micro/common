@@ -3,6 +3,7 @@ syntax = "proto3";
 package ose.micro.common.v1;
 
 import "google/protobuf/struct.proto";
+import "google/protobuf/any.proto";
 
 option go_package = "github.com/ose-micro/common/gen/go/ose/micro/common/v1;commonv1";
 
@@ -55,7 +56,7 @@ enum ComputedOperator {
 message Filter {
   string field = 1;
   FilterOp op = 2;
-  string value = 3;
+  google.protobuf.Any value = 3;
 }
 
 message Aggregation {
@@ -93,4 +94,3 @@ message Request {
 message Result {
   map<string, google.protobuf.Value> data = 1;
 }
-
