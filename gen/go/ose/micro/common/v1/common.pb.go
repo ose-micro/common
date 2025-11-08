@@ -30,7 +30,7 @@ type Address struct {
 	Latitude      float32                `protobuf:"fixed32,5,opt,name=latitude,proto3" json:"latitude,omitempty"`
 	Longitude     float32                `protobuf:"fixed32,6,opt,name=longitude,proto3" json:"longitude,omitempty"`
 	Line1         string                 `protobuf:"bytes,7,opt,name=line1,proto3" json:"line1,omitempty"`
-	Line2         string                 `protobuf:"bytes,8,opt,name=line2,proto3" json:"line2,omitempty"`
+	Line2         *string                `protobuf:"bytes,8,opt,name=line2,proto3,oneof" json:"line2,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -115,8 +115,8 @@ func (x *Address) GetLine1() string {
 }
 
 func (x *Address) GetLine2() string {
-	if x != nil {
-		return x.Line2
+	if x != nil && x.Line2 != nil {
+		return *x.Line2
 	}
 	return ""
 }
@@ -177,7 +177,7 @@ var File_ose_micro_common_v1_common_proto protoreflect.FileDescriptor
 
 const file_ose_micro_common_v1_common_proto_rawDesc = "" +
 	"\n" +
-	" ose/micro/common/v1/common.proto\x12\x13ose.micro.common.v1\"\xdd\x01\n" +
+	" ose/micro/common/v1/common.proto\x12\x13ose.micro.common.v1\"\xec\x01\n" +
 	"\aAddress\x12!\n" +
 	"\fcountry_code\x18\x01 \x01(\tR\vcountryCode\x12\x12\n" +
 	"\x04city\x18\x02 \x01(\tR\x04city\x12\x14\n" +
@@ -186,8 +186,9 @@ const file_ose_micro_common_v1_common_proto_rawDesc = "" +
 	"postalCode\x12\x1a\n" +
 	"\blatitude\x18\x05 \x01(\x02R\blatitude\x12\x1c\n" +
 	"\tlongitude\x18\x06 \x01(\x02R\tlongitude\x12\x14\n" +
-	"\x05line1\x18\a \x01(\tR\x05line1\x12\x14\n" +
-	"\x05line2\x18\b \x01(\tR\x05line2\"\xa2\x01\n" +
+	"\x05line1\x18\a \x01(\tR\x05line1\x12\x19\n" +
+	"\x05line2\x18\b \x01(\tH\x00R\x05line2\x88\x01\x01B\b\n" +
+	"\x06_line2\"\xa2\x01\n" +
 	"\tReference\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12H\n" +
 	"\bmetadata\x18\x02 \x03(\v2,.ose.micro.common.v1.Reference.MetadataEntryR\bmetadata\x1a;\n" +
@@ -228,6 +229,7 @@ func file_ose_micro_common_v1_common_proto_init() {
 	if File_ose_micro_common_v1_common_proto != nil {
 		return
 	}
+	file_ose_micro_common_v1_common_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

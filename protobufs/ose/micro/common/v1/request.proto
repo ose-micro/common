@@ -3,6 +3,7 @@ syntax = "proto3";
 package ose.micro.common.v1;
 
 import "google/protobuf/struct.proto";
+import "google/protobuf/any.proto";
 
 option go_package = "github.com/ose-micro/common/gen/go/ose/micro/common/v1;commonv1";
 
@@ -17,6 +18,7 @@ enum FilterOp {
   FILTER_OP_IN = 7;
   FILTER_OP_NIN = 8;
   FILTER_OP_REGEX = 9;
+  FILTER_OP_LIKE = 10;
 }
 
 enum AggregationType {
@@ -55,7 +57,7 @@ enum ComputedOperator {
 message Filter {
   string field = 1;
   FilterOp op = 2;
-  string value = 3;
+  google.protobuf.Any value = 3;
 }
 
 message Aggregation {
@@ -75,7 +77,7 @@ message ComputedField {
   repeated string operands = 3;
 }
 
-message FacetQuery {
+message Query {
   string name = 1;
   repeated Filter filters = 2;
   repeated string group_by = 3;
@@ -87,7 +89,7 @@ message FacetQuery {
 }
 
 message Request {
-  repeated FacetQuery facets = 1;
+  repeated Query facets = 1;
 }
 
 message Result {

@@ -12,7 +12,7 @@ message Address {
   float latitude = 5;
   float longitude = 6;
   string line1 = 7;
-  string line2 = 8;
+  optional string line2 = 8;
 }
 
 message Reference {
