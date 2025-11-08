@@ -113,6 +113,8 @@ func ToAny(val interface{}) *anypb.Any {
 		anyVal, err = anypb.New(wrapperspb.Double(v))
 	case bool:
 		anyVal, err = anypb.New(wrapperspb.Bool(v))
+	case time.Time:
+		anyVal, err = anypb.New(timestamppb.New(v))
 	default:
 		// If it's already a proto.Message, pack directly
 		if msg, ok := v.(anypb.Any); ok {
