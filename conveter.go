@@ -203,6 +203,14 @@ func FromAnyToPrimitive(val *anypb.Any) interface{} {
 		}
 		return wrapped.Value
 
+	case "type.googleapis.com/google.protobuf.Timestamp":
+		wrapped := &timestamppb.Timestamp{}
+		if err := val.UnmarshalTo(wrapped); err != nil {
+			log.Println("Failed to unmarshal timestamp:", err)
+			return time.Time{}
+		}
+		return wrapped.AsTime()
+
 	default:
 		log.Printf("Unsupported type: %s\n", val.TypeUrl)
 		return nil
